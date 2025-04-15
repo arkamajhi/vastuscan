@@ -18,7 +18,7 @@
 }
 
 /* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
-:root { 
+:root {
   --background-color: #ffffff; /* Background color for the entire website, including individual sections */
   --default-color: #444444; /* Default color used for the majority of the text content across the entire website */
   --heading-color: #222222; /* Color for headings, subheadings and title throughout the website */
@@ -967,6 +967,7 @@ section,
   height: 100%;
   position: relative;
   z-index: 1;
+  text-align: center;
 }
 
 .featured-services .service-item:before {
@@ -1007,6 +1008,7 @@ section,
 }
 
 .featured-services .service-item:hover h4 a,
+.featured-services .service-item:hover h2,
 .featured-services .service-item:hover .icon i,
 .featured-services .service-item:hover p {
   color: var(--contrast-color);
