@@ -1,3 +1,15 @@
+#aframe-container {
+        width: 600px;
+        height: 400px;
+        border: 2px solid #ccc;
+        margin: 20px auto;
+      }
+
+      a-scene {
+        width: 100%;
+        height: 100%;
+      }
+
 span.badge-popular{
   text-align: center;
   display:block;
