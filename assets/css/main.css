@@ -962,7 +962,7 @@ section,
 }
 
 .howitworks img{
-  transition: transform 1.5s ease-in-out;
+  transition: transform 5s ease-in-out;
 }
 
 .howitworks:hover img {
@@ -1036,6 +1036,25 @@ section,
 /*--------------------------------------------------------------
 # About Section
 --------------------------------------------------------------*/
+.aboutimage {
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border-radius: 15px;
+
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.aboutimage img{
+  transform-origin: 0 0;
+  transition: transform 5s ease-in-out;
+}
+
+.aboutimage:hover img {
+  transform: scale(1.5) translateY(5%); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+
 .about .about-content h3 {
   font-weight: 700;
   font-size: 26px;
@@ -1477,6 +1496,17 @@ section,
   position: relative;
   overflow: hidden;
 }
+
+.team .team-member .member-img img {
+  transition: transform 1s ease-in-out;
+}
+
+.team .team-member .member-img:hover img {
+  transform: scale(1.2) translateY(8%); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+
+
 
 .team .team-member .social {
   position: absolute;
