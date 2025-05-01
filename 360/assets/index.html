@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>WebVR - Aframe - VR walkthrough</title>
+    <meta name="description" content="WebVR - Aframe - VR walkthrough">
+
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <!--animation component scripts-->
+    <script src="https://unpkg.com/aframe-animation-component@^4.1.2/dist/aframe-animation-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.5.1/dist/aframe-look-at-component.min.js"></script>
+    <script>
+      AFRAME.registerComponent('hotspots',{
+        init:function(){
+            this.el.addEventListener('reloadspots',function(evt){
+
+            //get the entire current spot group and scale it to 0
+            var currspotgroup=document.getElementById(evt.detail.currspots);
+            currspotgroup.setAttribute("scale","0 0 0");
+
+            //get the entire new spot group and scale it to 1
+            var newspotgroup=document.getElementById(evt.detail.newspots);
+            newspotgroup.setAttribute("scale","1 1 1");
+          });
+        }
+      });
+      AFRAME.registerComponent('spot',{
+        schema:{
+          linkto:{type:"string",default:""},
+          spotgroup:{type:"string",default:""}
+        },
+        init:function(){
+
+          //add image source of hotspot icon
+          this.el.setAttribute("src","#hotspot");
+          //make the icon look at the camera all the time
+          this.el.setAttribute("look-at","#cam");
+
+          var data=this.data;
+
+          this.el.addEventListener('click',function(){
+            //set the skybox source to the new image as per the spot
+            var sky=document.getElementById("skybox");
+            sky.setAttribute("src",data.linkto);
+
+            var spotcomp=document.getElementById("spots");
+            var currspots=this.parentElement.getAttribute("id");
+            //create event for spots component to change the spots data
+            spotcomp.emit('reloadspots',{newspots:data.spotgroup,currspots:currspots});
+          });
+        }
+      });
+    </script>
+  </head>
+
+  <body>
+    <a-scene background="color: #ECECEC">
+
+      <a-assets>
+        <!-- here we load our 360 images and assign and id -->
+       <img id="room1"  src="1.jpg"/>
+       <img id="room2"  src="2.jpg"/>
+       <img id="room3"  src="3.jpg"/>
+       <img id="room4"  src="4.jpg"/>
+       <img id="room5"  src="5.jpg"/>
+       <img id="room6"  src="6.jpg"/>
+       <img id="room7"  src="7.jpg"/>
+       <img id="room8"  src="8.jpg"/>
+       <img id="room9"  src="9.jpg"/>
+       <img id="room10"  src="10.jpg"/>
+       <img id="room11"  src="11.jpg"/>
+
+        <!-- here we load the location icon we want to use and assign the id = "hotspot " -->
+        <img id="hotspot" src="https://cdn.glitch.com/5785f504-b035-426e-890b-7831a289e96c%2Flocation05.gif?v=1589236533619"/>
+      </a-assets>
+
+      <!-- Link 360 images to hotspots -->
+      <a-entity id="spots" hotspots>
+        <a-entity id="group-room1">
+          <!--a-image spot="linkto:#room2;spotgroup:group-room2" position="0 3 -10"></a-image-->
+          <a-image spot="linkto: #room2; spotgroup: group-room2" position="-5 0 0" rotation="0 90 0"></a-image>
+          <a-image spot="linkto: #room4; spotgroup: group-room4" position="-10 0 -15" rotation="0 90 0"></a-image>
+          <a-image spot="linkto: #room3; spotgroup: group-room3" position="-15 0 -5" rotation="0 90 0"></a-image>
+        </a-entity>
+        <a-entity id="group-room2" scale="0 0 0">
+          <a-image spot="linkto: #room3; spotgroup: group-room3" position="-10 0 -2" rotation="0 90 0"></a-image>
+          <a-image spot="linkto: #room1; spotgroup: group-room1" position="10 0 0" rotation="0 90 0"></a-image>
+          <a-image spot="linkto: #room4; spotgroup: group-room4" position="0 0 -6" rotation="0 90 0"></a-image>
+        </a-entity>
+        <a-entity id="group-room3" scale="0 0 0">
+          <a-image spot="linkto: #room2; spotgroup: group-room2" position="6 0 5" rotation="0 90 0"></a-image>
+          <a-image spot="linkto: #room1; spotgroup: group-room1" position="15 0 2" rotation="0 90 0"></a-image>
+        </a-entity>
+        <a-entity id="group-room4" scale="0 0 0">
+          <a-image spot="linkto: #room5; spotgroup: group-room5" position="6 0 0" rotation="0 90 0"></a-image>
+          <a-image spot="linkto: #room2; spotgroup: group-room2" position="0 0 6" rotation="0 90 0"></a-image>
+        </a-entity>
+      </a-entity>
+
+      <!-- Define the starting image of the tour-->
+      <a-sky id="skybox" src="#room1"></a-sky>
+
+      <!-- Camera and cursor -->
+      <a-entity id="cam" camera position="0 1.6 0" look-controls>
+        <a-entity cursor="fuse:true;fuseTimeout:2000"
+                  geometry="primitive:ring;radiusInner:0.01;radiusOuter:0.02"
+                  position="0 0 -1.8"
+                  material="shader:flat;color:#ffff00"
+                  animation__mouseenter="property:scale;to:3 3 3;startEvents:mouseenter;endEvents:mouseleave;dir:reverse;dur:2000;loop:1">
+        </a-entity>
+      </a-entity>
+
+    </a-scene>
+  </body>
+</html>
