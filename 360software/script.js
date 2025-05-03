@@ -1,24 +1,10 @@
 const rooms = {
-  entrance: { image: 'rooms/entrance.jpg', hotspots: [
-    { position: '2 1 -3', target: 'drawing' },
-    { position: '-2 1 -3', type: 'info', title: 'Entrance', text: 'This is the main entrance.' }
-  ]},
-  drawing: { image: 'rooms/drawing.jpg', hotspots: [
-    { position: '2 1 -3', target: 'dining' },
-    { position: '0 2 -3', type: 'info', title: 'Drawing Room', text: 'A spacious drawing room.' }
-  ]},
-  dining: { image: 'rooms/dining.jpg', hotspots: [
-    { position: '0 1 -3', target: 'kitchen' }
-  ]},
-  kitchen: { image: 'rooms/kitchen.jpg', hotspots: [
-    { position: '0 1 -3', target: 'bedroom' }
-  ]},
-  bedroom: { image: 'rooms/bedroom.jpg', hotspots: [
-    { position: '0 1 -3', target: 'toilet' }
-  ]},
-  toilet: { image: 'rooms/toilet.jpg', hotspots: [
-    { position: '0 1 -3', target: 'entrance' }
-  ]}
+  entrance: { image: 'rooms/entrance.jpg', hotspots: [] },
+  drawing: { image: 'rooms/drawing.jpg', hotspots: [] },
+  dining: { image: 'rooms/dining.jpg', hotspots: [] },
+  kitchen: { image: 'rooms/kitchen.jpg', hotspots: [] },
+  bedroom: { image: 'rooms/bedroom.jpg', hotspots: [] },
+  toilet: { image: 'rooms/toilet.jpg', hotspots: [] }
 };
 
 const sky = document.querySelector('#sky');
@@ -27,6 +13,14 @@ const modal = document.querySelector('#infoModal');
 const closeModal = document.querySelector('.close');
 const infoTitle = document.querySelector('#infoTitle');
 const infoText = document.querySelector('#infoText');
+
+const roomSelect = document.querySelector('#roomSelect');
+const addHotspotBtn = document.querySelector('#addHotspotBtn');
+const hotspotTypeSelect = document.querySelector('#hotspotType');
+const roomLinkSelect = document.querySelector('#roomLink');
+const infoTextInput = document.querySelector('#infoText');
+const saveHotspotBtn = document.querySelector('#saveHotspotBtn');
+const hotspotTypeSection = document.querySelector('#hotspotTypeSection');
 
 let currentRoom = 'entrance';
 
@@ -60,6 +54,53 @@ function loadRoom(roomName) {
   currentRoom = roomName;
 }
 
+function addHotspot() {
+  const selectedRoom = roomSelect.value;
+  hotspotTypeSection.style.display = 'block';
+  saveHotspotBtn.onclick = () => {
+    const type = hotspotTypeSelect.value;
+    const positionString = prompt('Enter hotspot position (e.g., "2 1 -3"): ');
+
+    if (!positionString) {
+      alert('Position cannot be empty!');
+      return;
+    }
+
+    // Parse position into an array [x, y, z]
+    const position = positionString.split(' ').map(val => parseFloat(val.trim()));
+
+    if (position.length !== 3 || position.some(isNaN)) {
+      alert('Invalid position format!');
+      return;
+    }
+
+    const roomLink = roomLinkSelect.value;
+    const infoTextValue = infoTextInput.value;
+
+    if (type === 'info') {
+      const info = {
+        type: 'info',
+        title: 'Information',  // Add your title here
+        text: infoTextValue,
+        position: position
+      };
+      rooms[selectedRoom].hotspots.push(info);
+    } else {
+      const link = {
+        type: 'link',
+        target: roomLink,
+        position: position
+      };
+      rooms[selectedRoom].hotspots.push(link);
+    }
+
+    loadRoom(selectedRoom);
+    hotspotTypeSection.style.display = 'none';
+  };
+}
+
+addHotspotBtn.onclick = addHotspot;
+
 closeModal.onclick = () => {
   modal.style.display = "none";
 };
@@ -68,6 +109,10 @@ window.onclick = function (event) {
   if (event.target == modal) {
     modal.style.display = "none";
   }
+};
+
+roomSelect.onchange = function () {
+  loadRoom(roomSelect.value);
 };
 
 loadRoom(currentRoom);

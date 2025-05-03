@@ -2,47 +2,44 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>360 Virtual Tour with Admin GUI</title>
+    <title>360 Virtual Tour with Multi-Language TTS Admin GUI</title>
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
     <script src="https://unpkg.com/aframe-animation-component@^4.1.2/dist/aframe-animation-component.min.js"></script>
     <style>
       #adminPanel {
-        position: absolute; top:10px; left:10px;
+        position: absolute; top: 10px; left: 10px;
         background: rgba(255,255,255,0.9);
-        padding:15px; border-radius:8px; z-index:999;
+        padding: 15px; border-radius: 8px; z-index: 999;
       }
-      .form-group { margin-bottom:10px; }
-      label { font-weight:bold; }
+      .form-group { margin-bottom: 10px; }
+      label { font-weight: bold; }
       #infoModal {
-        display:none; position:fixed; top:0; left:0;
-        width:100%; height:100%; background:rgba(0,0,0,0.6);
-        align-items:center; justify-content:center; z-index:1000;
+        display: none; position: fixed; top: 0; left: 0;
+        width: 100%; height: 100%; background: rgba(0,0,0,0.6);
+        align-items: center; justify-content: center; z-index: 1000;
       }
       #infoModal .modal-content {
-        background:#fff; padding:30px; border-radius:6px;
-        max-width:400px; width:90%; text-align:left;
+        background: #fff; padding: 30px; border-radius: 6px;
+        max-width: 400px; width: 90%; text-align: left;
       }
-      /* Double-size, more readable modal text */
       #infoModal .modal-content h2 {
-        font-size: 2em;
-        margin-bottom: 0.5em;
+        font-size: 2em; margin-bottom: 0.5em;
       }
       #infoModal .modal-content p {
-        font-size: 1.5em;
-        line-height: 1.4;
+        font-size: 1.5em; line-height: 1.4;
       }
       #infoModal .close-btn {
-        float:right; cursor:pointer; font-size:1.5em; color:#666;
+        float: right; cursor: pointer; font-size: 1.5em; color: #666;
       }
     </style>
     <script>
-      // Billboard component: face the camera every frame
+      // Billboard component: always face the camera
       AFRAME.registerComponent('billboard', {
         tick: function() {
-          const cam = this.el.sceneEl.camera.el;
-          if (!cam) return;
-          this.el.object3D.lookAt(cam.object3D.position);
+          const camEl = this.el.sceneEl.camera.el;
+          if (!camEl) return;
+          this.el.object3D.lookAt(camEl.object3D.position);
         }
       });
     </script>
@@ -100,12 +97,12 @@
     <!-- A-Frame Scene -->
     <a-scene id="scene">
       <a-assets>
-        <img id="entrance"  src="images/entrance.JPG" />
-        <img id="kitchen"   src="images/kitchen.JPG" />
-        <img id="room1"     src="images/room1.JPG" />
-        <img id="room2"     src="images/room2.JPG" />
-        <img id="toilet"    src="images/toilet.JPG" />
-        <img id="washroom"  src="images/washroom.JPG" />
+        <img id="entrance" src="images/entrance.JPG" />
+        <img id="kitchen"  src="images/kitchen.JPG" />
+        <img id="room1"    src="images/room1.JPG" />
+        <img id="room2"    src="images/room2.JPG" />
+        <img id="toilet"   src="images/toilet.JPG" />
+        <img id="washroom" src="images/washroom.JPG" />
       </a-assets>
 
       <a-sky id="sky" src="#entrance" rotation="0 -90 0"></a-sky>
@@ -114,12 +111,64 @@
           <a-cursor fuse="true" fuse-timeout="1000"
                     material="color:white;shader:flat"
                     geometry="primitive:ring;radiusInner:0.01;radiusOuter:0.02"
-                    position="0 0 -1"></a-cursor>
+                    position="0 0 -1">
+          </a-cursor>
         </a-camera>
       </a-entity>
     </a-scene>
 
     <script>
+      const synth = window.speechSynthesis;
+      let voices = [];
+      function loadVoices() {
+        voices = synth.getVoices();
+      }
+      loadVoices();
+      synth.onvoiceschanged = loadVoices;
+
+      // Map Unicode ranges to language codes
+      function detectLangCode(text) {
+        for (let ch of text) {
+          const c = ch.charCodeAt(0);
+          if (c >= 0x0900 && c <= 0x097F) return 'hi';    // Devanagari → Hindi
+          if (c >= 0x0980 && c <= 0x09FF) return 'bn';    // Bengali
+          if (c >= 0x0A00 && c <= 0x0A7F) return 'pa';    // Gurmukhi → Punjabi
+          if (c >= 0x0A80 && c <= 0x0AFF) return 'gu';    // Gujarati
+          if (c >= 0x0B00 && c <= 0x0B7F) return 'or';    // Oriya
+          if (c >= 0x0B80 && c <= 0x0BFF) return 'ta';    // Tamil
+          if (c >= 0x0C00 && c <= 0x0C7F) return 'te';    // Telugu
+          if (c >= 0x0C80 && c <= 0x0CFF) return 'kn';    // Kannada
+          if (c >= 0x0D00 && c <= 0x0D7F) return 'ml';    // Malayalam
+        }
+        return 'en';  // fallback to English
+      }
+
+      // Speak an array of lines with fallback voices
+      function speakLines(lines) {
+        synth.cancel();
+        if (!voices.length) {
+          // wait for voices to load then retry
+          synth.onvoiceschanged = () => {
+            loadVoices();
+            speakLines(lines);
+            synth.onvoiceschanged = null;
+          };
+          return;
+        }
+        lines.forEach(line => {
+          const code = detectLangCode(line);
+          // find exact or fallback to Hindi or English
+          let voice = voices.find(v => v.lang.toLowerCase().startsWith(code + '-'))
+                   || voices.find(v => v.lang.toLowerCase().startsWith('hi-'))
+                   || voices.find(v => v.lang.toLowerCase().startsWith('en-'))
+                   || voices[0];
+          const utter = new SpeechSynthesisUtterance(line);
+          utter.voice = voice;
+          utter.lang  = voice.lang;
+          synth.speak(utter);
+        });
+      }
+
       const roomSelect  = document.getElementById("roomSelect");
       const hotspotType = document.getElementById("hotspotType");
       const linkFields  = document.getElementById("linkFields");
@@ -129,6 +178,11 @@
       const modal       = document.getElementById("infoModal");
       const modalTitle  = document.getElementById("modalTitle");
       const modalText   = document.getElementById("modalText");
+
+      function hideModal() {
+        synth.cancel();
+        modal.style.display = "none";
+      }
 
       hotspotType.addEventListener("change", () => {
         linkFields.style.display = hotspotType.value === "link" ? "block" : "none";
@@ -140,8 +194,6 @@
         sky.setAttribute("src", `#${r}`);
         switchHotspotGroup(r);
       });
-
-      function hideModal() { modal.style.display = "none"; }
 
       function getHotspotContainer(room) {
         let c = document.getElementById(`hotspots-${room}`);
@@ -155,23 +207,28 @@
       }
 
       function switchHotspotGroup(room) {
-        document.querySelectorAll("[id^=hotspots-]").forEach(c => c.setAttribute("visible","false"));
+        document.querySelectorAll("[id^=hotspots-]")
+          .forEach(c => c.setAttribute("visible","false"));
         getHotspotContainer(room).setAttribute("visible","true");
       }
 
       function getCameraDirPos(dist = 10) {
-        const cam = document.querySelector("[camera]").object3D;
+        const camObj = document.querySelector("[camera]").object3D;
         const pos = new THREE.Vector3();
-        cam.getWorldPosition(pos);
+        camObj.getWorldPosition(pos);
         const dir = new THREE.Vector3();
-        cam.getWorldDirection(dir).normalize().multiplyScalar(-dist);
-        return `${pos.x + dir.x} ${pos.y + dir.y} ${pos.z + dir.z}`;
+        camObj.getWorldDirection(dir).normalize().multiplyScalar(-dist);
+        return `${pos.x+dir.x} ${pos.y+dir.y} ${pos.z+dir.z}`;
       }
 
       function addHotspot() {
-        const room      = roomSelect.value;
-        const container = getHotspotContainer(room);
+        const room        = roomSelect.value;
+        const container   = getHotspotContainer(room);
         switchHotspotGroup(room);
+
+        // capture inputs for each hotspot
+        const infoTitleVal = document.getElementById("infoTitle").value.trim() || "Info";
+        const infoTextVal  = document.getElementById("infoText").value.trim();
 
         const type = hotspotType.value;
         const h    = document.createElement("a-entity");
@@ -180,21 +237,21 @@
 
         if (type === "link") {
           const target = document.getElementById("linkRoom").value;
-          [0.25,0.4,0.55].forEach((r,i)=>{
+          [0.25,0.4,0.55].forEach((r,i) => {
             const ring = document.createElement("a-ring");
-            ring.setAttribute("radius-inner", r - 0.02);
+            ring.setAttribute("radius-inner", r-0.02);
             ring.setAttribute("radius-outer", r);
             ring.setAttribute("material","color:#106eea;shader:flat;opacity:1;side:double");
-            ring.setAttribute("animation",{
-              property:"scale", to:"1.2 1.2 1.2",
-              dir:"alternate", dur:800+i*200, loop:true
+            ring.setAttribute("animation", {
+              property: "scale", to: "1.2 1.2 1.2",
+              dir: "alternate", dur: 800+i*200, loop: true
             });
             h.appendChild(ring);
           });
           const trigger = document.createElement("a-sphere");
           trigger.setAttribute("radius",0.6);
           trigger.setAttribute("material","opacity:0;transparent:true;side:double");
-          trigger.addEventListener("click",()=>{
+          trigger.addEventListener("click", () => {
             roomSelect.value = target;
             sky.setAttribute("src", `#${target}`);
             switchHotspotGroup(target);
@@ -202,13 +259,11 @@
           h.appendChild(trigger);
 
         } else {
-          // translucent circle
           const bg = document.createElement("a-circle");
           bg.setAttribute("radius",0.3);
           bg.setAttribute("material","color:#106eea;shader:flat;opacity:0.5;side:double");
           h.appendChild(bg);
 
-          // Om sign SVG
           const icon = document.createElement("a-image");
           icon.setAttribute("src",
             "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxNTAiIGZpbGw9IndoaXRlIj4mI3gwOTUwOzwvdGV4dD48L3N2Zz4="
@@ -219,14 +274,14 @@
           icon.setAttribute("billboard","");
           h.appendChild(icon);
 
-          // invisible click area
           const trigger = document.createElement("a-sphere");
           trigger.setAttribute("radius",0.5);
           trigger.setAttribute("material","opacity:0;transparent:true;side:double");
-          trigger.addEventListener("click",()=>{
-            modalTitle.textContent = document.getElementById("infoTitle").value || "Info";
-            modalText.textContent  = document.getElementById("infoText").value || "";
+          trigger.addEventListener("click", () => {
+            modalTitle.textContent = infoTitleVal;
+            modalText.textContent  = infoTextVal;
             modal.style.display    = "flex";
+            speakLines([infoTitleVal, infoTextVal]);
           });
           h.appendChild(trigger);
         }
