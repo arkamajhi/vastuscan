@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Virtual Tour</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-html-shader@1.0.0/dist/aframe-html-shader.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <!-- Modal Info Box -->
+    <div id="infoModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="infoTitle">Info Title</h2>
+        <p id="infoText">Information goes here.</p>
+      </div>
+    </div>
+
+    <a-scene>
+      <!-- 360 Image Sphere -->
+      <a-sky id="sky" src="rooms/entrance.jpg" rotation="0 -90 0"></a-sky>
+
+      <!-- Camera + Cursor -->
+      <a-entity camera look-controls>
+        <a-entity cursor="fuse: true; fuseTimeout: 500"
+                  position="0 0 -1"
+                  geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                  material="color: white; shader: flat"></a-entity>
+      </a-entity>
+
+      <!-- Dynamic Hotspots -->
+      <a-entity id="hotspots"></a-entity>
+    </a-scene>
+
+    <script src="script.js"></script>
+  </body>
+</html>
