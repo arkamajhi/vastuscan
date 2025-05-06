@@ -7,10 +7,18 @@
   <body>
     <a-scene>
       <a-assets>
-        <img id="backgroundInsideHouse" crossorigin="anonymous" src="assets\img\site_images\mainpage360.png">
+        <img id="backgroundInsideHouse" crossorigin="anonymous" src="assets\img\site_images\mainpage360_2.png">
       </a-assets>
 
-      <a-sky id="background-img" src="#backgroundInsideHouse" rotation="0 -110 0"></a-sky>
+      <a-sky id="background-img" src="#backgroundInsideHouse" rotation="0 235 0" ></a-sky>
+
+      <a-camera
+        position="0 0 150"  <!-- Move camera further away -->
+        look-controls="pointerLockEnabled: false"
+        wasd-controls="enabled: false"
+        auto-rotate="true"
+        auto-rotate-speed="0.2">
+      </a-camera>
 
 
     </a-scene>
