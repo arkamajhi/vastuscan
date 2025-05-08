@@ -1384,15 +1384,15 @@
     </div>
 
     <!-- 📱 Mobile Install Banner -->
-<div id="mobile-install-banner" class="pwa-banner mobile-banner" style="display: none;">
-  <div class="mobile-banner-content">
-    <button id="close-mobile-banner" class="mobile-close-btn" aria-label="Close Mobile Banner">✕</button>
-    <p class="mobile-banner-text">
-      <strong>VastuScan</strong> web app won't take up space on your phone
-    </p>
-    <button id="install-mobile-btn" class="mobile-install-btn">Install</button>
-  </div>
-</div>
+    <div id="mobile-install-banner" class="pwa-banner mobile-banner" style="display: none;">
+      <div class="mobile-banner-content">
+        <button id="close-mobile-banner" class="mobile-close-btn" aria-label="Close">✕</button>
+        <p class="mobile-banner-text">
+          <strong>VastuScan</strong> web app won’t take up space on your phone.
+        </p>
+        <button id="install-mobile-btn" class="mobile-install-btn">Install</button>
+      </div>
+    </div>
 
 
 <!-- 💻 Desktop Install Banner -->
@@ -1408,75 +1408,44 @@
   </div>
 </div>
 <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-    }
-
-    .pwa-banner {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background-color: #6a00ff;
-      color: white;
-      z-index: 9999;
-      padding: 1.5rem 2rem;
-      text-align: center;
-    }
-
-    .button-group {
-      display: flex;
-      gap: 0.7rem;
-      flex-wrap: wrap;
-    }
-
-    .button-group button {
-      background-color: white;
-      color: #6a00ff;
-      font-weight: bold;
-      border: none;
-      border-radius: 20px;
-      padding: 0.5rem 1.2rem;
-      cursor: pointer;
-      font-size: 0.95rem;
-    }
-
-    /* Desktop banner layout */
-    #desktop-install-banner {
-      display: none;
-    }
-
-    .desktop-content {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.2rem;
-      flex-wrap: wrap;
-      max-width: 1100px;
-      margin: 0 auto;
-      text-align: left;
-    }
-
-    .desktop-content .text-block {
-      font-size: 1rem;
-      flex: 1 1 auto;
-      min-width: 200px;
-      line-height: 1.4;
-    }
-
-    .mobile-banner-content {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  gap: 0.5rem;
-  padding-right: 3.5rem; /* space for scroll-up arrow */
-  padding-left: 0.8rem;
+/* Reset and Base Styles */
+body {
+  margin: 0;
+  font-family: sans-serif;
 }
 
+/* ====================================
+   🔹 COMMON BANNER STYLING
+   ==================================== */
+.pwa-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #6a00ff;
+  color: white;
+  font-family: sans-serif;
+  z-index: 9999;
+  font-size: 0.9rem;
+}
+
+/* ====================================
+   📱 MOBILE INSTALL BANNER
+   ==================================== */
+#mobile-install-banner {
+  display: none;
+}
+
+.mobile-banner-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  padding-right: 3.7rem; /* space for scroll-to-top button */
+}
+
+/* Close Button */
 .mobile-close-btn {
   background: transparent;
   color: white;
@@ -1484,30 +1453,59 @@
   font-size: 1.2rem;
   cursor: pointer;
   padding: 0;
-  margin-right: 0.5rem;
+  line-height: 1;
 }
 
+/* Text */
 .mobile-banner-text {
   flex: 1;
   text-align: center;
-  font-size: 0.95rem;
   margin: 0;
-  line-height: 1.4;
+  font-size: 0.85rem;
+  line-height: 1.3;
 }
 
+/* Install Button */
 .mobile-install-btn {
   background-color: white;
   color: #6a00ff;
   border: none;
   border-radius: 20px;
-  padding: 0.5rem 1.1rem;
-  font-size: 0.95rem;
-  font-weight: bold;
+  padding: 0.3rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
 }
 
-    /* Desktop button styles */
-#desktop-install-btn,
+
+/* ====================================
+   💻 DESKTOP INSTALL BANNER
+   ==================================== */
+#desktop-install-banner {
+  display: none;
+  padding: 1.2rem 2rem;
+}
+
+.desktop-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.desktop-content .text-block {
+  font-size: 1rem;
+  flex: 1 1 auto;
+  min-width: 200px;
+  line-height: 1.4;
+}
+
+/* Desktop CTA Install Button */
 #install-desktop-btn {
   background-color: white;
   color: #6a00ff;
@@ -1517,16 +1515,15 @@
   padding: 0.5rem 1.5rem;
   font-size: 1rem;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* subtle elevation */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   transition: background-color 0.2s ease;
 }
 
-#desktop-install-btn:hover,
 #install-desktop-btn:hover {
   background-color: #f3f3f3;
 }
 
-/* Less prominent "Close" button */
+/* Desktop Close Button - Less Prominent */
 #close-desktop-banner {
   background-color: transparent;
   color: white;
@@ -1546,30 +1543,19 @@
 }
 
 
-    /* Mobile banner layout */
-    #mobile-install-banner {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
+/* ====================================
+   🔄 RESPONSIVE FIXES
+   ==================================== */
+@media (max-width: 768px) {
+  .desktop-content {
+    flex-direction: column;
+    text-align: center;
+  }
 
-    #mobile-install-banner p {
-      font-size: 1rem;
-      margin: 0 0 0.8rem 0;
-    }
-
-    @media (max-width: 768px) {
-      .desktop-content {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .button-group {
-        justify-content: center;
-      }
-    }
-
+  .button-group {
+    justify-content: center;
+  }
+}
 
   </style>
 
