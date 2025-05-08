@@ -1431,119 +1431,121 @@
     </div>
 
     <!-- 📱 Mobile Install Banner -->
-<div id="mobile-install-banner" class="pwa-banner mobile-banner" style="display: none;">
-  <button id="close-mobile-banner" class="close-btn" aria-label="Close Mobile Prompt">✕</button>
-  <p>Access <strong>VastuScan</strong> offline using our web app.<br>It won't take up space on your phone.</p>
-  <div class="button-group">
-    <button id="install-mobile-btn">Install</button>
-  </div>
-</div>
-
-<!-- 💻 Desktop Install Banner -->
-<div id="desktop-install-banner" class="pwa-banner desktop-banner" style="display: none;">
-  <div class="desktop-content">
-    <span><strong>VastuScan Offline Application</strong> — Get our free app. It won't take up space on your device.</span>
-    <div class="button-group">
-      <button id="install-desktop-btn" class="install-btn">Install</button>
-      <button id="close-desktop-banner" class="install-btn">X</button>
+    <div id="mobile-install-banner" class="pwa-banner mobile-banner" style="display: none;">
+      <button id="close-mobile-banner" class="close-icon" aria-label="Close Mobile Prompt">✕</button>
+      <p>Access <strong>VastuScan</strong> offline using our web app.<br>It won't take up space on your phone.</p>
+      <div class="button-group">
+        <button id="install-mobile-btn" class="install-btn">Install</button>
+      </div>
     </div>
-  </div>
-</div>
 
-<style>
-  .pwa-banner {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: #6a00ff;
-    color: white;
-    font-family: sans-serif;
-    z-index: 9999;
-    padding: 2rem 1.5rem 1rem;
-    text-align: center;
-  }
+    <!-- 💻 Desktop Install Banner -->
+    <div id="desktop-install-banner" class="pwa-banner desktop-banner" style="display: none;">
+      <div class="desktop-content">
+        <span><strong>VastuScan Offline Application</strong> — Get our free app. It won't take up space on your device.</span>
+        <div class="button-group">
+          <button id="install-desktop-btn" class="install-btn">Install</button>
+          <button id="close-desktop-banner" class="install-btn">Close</button>
+        </div>
+      </div>
+    </div>
 
-  .pwa-banner p,
-  .pwa-banner span {
-    font-size: 1rem;
-    margin-bottom: 0.8rem;
-  }
+    <style>
+      .pwa-banner {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #6a00ff;
+        color: white;
+        font-family: sans-serif;
+        z-index: 9999;
+        padding: 2rem 1.5rem 1rem;
+        text-align: center;
+      }
 
-  /* Mobile Banner */
-  .mobile-banner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+      .pwa-banner p,
+      .pwa-banner span {
+        font-size: 1rem;
+        margin-bottom: 0.8rem;
+      }
 
-  .mobile-banner .button-group {
-    display: flex;
-    gap: 0.7rem;
-    justify-content: center;
-  }
+      .install-btn {
+        background-color: white;
+        color: #6a00ff;
+        font-weight: bold;
+        border: none;
+        border-radius: 20px;
+        padding: 0.5rem 1.2rem;
+        cursor: pointer;
+        font-size: 0.95rem;
+      }
 
-  .desktop-banner {
-    display: flex;
-    justify-content: center;
-    padding: 1.2rem 2rem;
-  }
+      .install-btn:hover {
+        opacity: 0.85;
+      }
 
-  .desktop-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-    max-width: 1100px;
-    width: 100%;
-  }
+      /* 📱 Mobile Layout */
+      .mobile-banner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+      }
 
-  .button-group {
-    display: flex;
-    gap: 0.7rem;
-  }
+      .button-group {
+        display: flex;
+        gap: 0.7rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
 
-  .install-btn {
-    background-color: white;
-    color: #6a00ff;
-    font-weight: bold;
-    border: none;
-    border-radius: 20px;
-    padding: 0.5rem 1.2rem;
-    cursor: pointer;
-    font-size: 0.95rem;
-  }
+      .close-icon {
+        position: absolute;
+        top: 0.5rem;
+        right: 1rem;
+        background: none;
+        color: white;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        z-index: 10000;
+        line-height: 1;
+      }
 
-  .close-btn {
-    position: absolute;
-    top: 0.5rem;
-    right: 1rem;
-    background: transparent;
-    color: white;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    line-height: 1;
-    z-index: 10000;
-  }
+      .close-icon:hover {
+        opacity: 0.6;
+      }
 
-  .close-btn:hover,
-  .install-btn:hover {
-    opacity: 0.85;
-  }
+      /* 💻 Desktop Layout */
+      .desktop-banner {
+        display: flex;
+        justify-content: center;
+        padding: 1.2rem 2rem;
+      }
 
-  @media (max-width: 768px) {
-    .desktop-content {
-      flex-direction: column;
-      text-align: center;
-    }
+      .desktop-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+        max-width: 1100px;
+        width: 100%;
+      }
 
-    .button-group {
-      justify-content: center;
-    }
-  }
-</style>
+      @media (max-width: 768px) {
+        .desktop-content {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .button-group {
+          justify-content: center;
+        }
+      }
+    </style>
+
 
 
 
