@@ -1432,23 +1432,26 @@
 
     <!-- 📱 Mobile Install Banner -->
     <div id="mobile-install-banner" class="pwa-banner mobile-banner" style="display: none;">
-      <button id="close-mobile-banner" class="close-icon" aria-label="Close Mobile Prompt">✕</button>
+      <button id="close-mobile-banner" class="close-btn" aria-label="Close Mobile Prompt">✕</button>
       <p>Access <strong>VastuScan</strong> offline using our web app.<br>It won't take up space on your phone.</p>
       <div class="button-group">
-        <button id="install-mobile-btn" class="install-btn">Install</button>
+        <button id="install-mobile-btn">Install</button>
       </div>
     </div>
 
     <!-- 💻 Desktop Install Banner -->
     <div id="desktop-install-banner" class="pwa-banner desktop-banner" style="display: none;">
-      <div class="desktop-content">
+      <button id="close-desktop-banner" class="close-btn" aria-label="Close Desktop Prompt">✕</button>
+      <div class="text-block">
         <span><strong>VastuScan Offline Application</strong> — Get our free app. It won't take up space on your device.</span>
-        <div class="button-group">
-          <button id="install-desktop-btn" class="install-btn">Install</button>
-          <button id="close-desktop-banner" class="install-btn">Close</button>
-        </div>
+      </div>
+      <div class="button-group">
+        <button id="install-desktop-btn">Install</button>
       </div>
     </div>
+
+
+
 
     <style>
       .pwa-banner {
@@ -1461,16 +1464,26 @@
         font-family: sans-serif;
         z-index: 9999;
         padding: 2rem 1.5rem 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         text-align: center;
       }
 
       .pwa-banner p,
-      .pwa-banner span {
+      .pwa-banner .text-block span {
         font-size: 1rem;
         margin-bottom: 0.8rem;
       }
 
-      .install-btn {
+      .button-group {
+        display: flex;
+        gap: 0.7rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .pwa-banner .button-group button {
         background-color: white;
         color: #6a00ff;
         font-weight: bold;
@@ -1481,72 +1494,24 @@
         font-size: 0.95rem;
       }
 
-      .install-btn:hover {
-        opacity: 0.85;
-      }
-
-      /* 📱 Mobile Layout */
-      .mobile-banner {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: relative;
-      }
-
-      .button-group {
-        display: flex;
-        gap: 0.7rem;
-        justify-content: center;
-        flex-wrap: wrap;
-      }
-
-      .close-icon {
+      .close-btn {
         position: absolute;
         top: 0.5rem;
-        right: 1rem;
-        background: none;
-        color: white;
-        border: none;
-        font-size: 1.5rem;
+        right: 0.8rem;
+        background: transparent !important;
+        color: white !important;
+        border: none !important;
+        font-size: 1.5rem !important;
+        font-weight: normal;
         cursor: pointer;
-        z-index: 10000;
         line-height: 1;
+        z-index: 10000;
       }
 
-      .close-icon:hover {
+      .close-btn:hover {
         opacity: 0.6;
       }
-
-      /* 💻 Desktop Layout */
-      .desktop-banner {
-        display: flex;
-        justify-content: center;
-        padding: 1.2rem 2rem;
-      }
-
-      .desktop-content {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        flex-wrap: wrap;
-        max-width: 1100px;
-        width: 100%;
-      }
-
-      @media (max-width: 768px) {
-        .desktop-content {
-          flex-direction: column;
-          text-align: center;
-        }
-
-        .button-group {
-          justify-content: center;
-        }
-      }
     </style>
-
-
 
 
 
