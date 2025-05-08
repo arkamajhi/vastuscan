@@ -96,53 +96,6 @@
 
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
 
-  <!--script type="text/javascript">
-  let deferredPrompt;
-
-  window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  document.getElementById('installPWA').style.display = 'block';
-
-  document.getElementById('installPWA').addEventListener('click', () => {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then((choice) => {
-      if (choice.outcome === 'accepted') {
-        console.log('User installed the PWA');
-      }
-      deferredPrompt = null;
-    });
-  });
-  });
-
-</script-->
-
-  <!--script>
-    let deferredPrompt;
-    const banner = document.getElementById('pwa-install-banner');
-    const installBtn = document.getElementById('pwa-install-btn');
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      banner.style.display = 'block';
-    });
-
-    installBtn.addEventListener('click', async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const choice = await deferredPrompt.userChoice;
-        if (choice.outcome === 'accepted') {
-          console.log('PWA installed');
-          banner.style.display = 'none';
-        } else {
-          console.log('PWA install dismissed');
-        }
-        deferredPrompt = null;
-      }
-    });
-  </script-->
-
 </head>
 
 
@@ -1432,7 +1385,7 @@
 
     <!-- 📱 Mobile Install Banner -->
     <div id="mobile-install-banner" class="pwa-banner mobile-banner" style="display: none;">
-      <button id="close-mobile-banner" class="close-btn" aria-label="Close Mobile Prompt">✕</button>
+      <button id="close-mobile-banner" class="close-btn">✕</button>
       <p>Access <strong>VastuScan</strong> offline using our web app.<br>It won't take up space on your phone.</p>
       <div class="button-group">
         <button id="install-mobile-btn">Install</button>
@@ -1441,14 +1394,15 @@
 
     <!-- 💻 Desktop Install Banner -->
     <div id="desktop-install-banner" class="pwa-banner desktop-banner" style="display: none;">
-      <div class="desktop-content">
+      <button id="close-desktop-banner" class="close-btn">✕</button>
+      <div class="text-block">
         <span><strong>VastuScan Offline Application</strong> — Get our free app. It won't take up space on your device.</span>
-        <div class="button-group">
-          <button id="install-desktop-btn" class="install-btn">Install</button>
-          <button id="close-desktop-banner" class="install-btn">Close</button>
-        </div>
+      </div>
+      <div class="button-group">
+        <button id="install-desktop-btn">Install</button>
       </div>
     </div>
+
 
 
     <style>
@@ -1461,12 +1415,26 @@
         color: white;
         font-family: sans-serif;
         z-index: 9999;
-        padding: 1.5rem;
+        padding: 2rem 1.5rem 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         text-align: center;
       }
 
-      .install-btn,
-      .pwa-banner .button-group button {
+      .pwa-banner .text-block span,
+      .pwa-banner p {
+        font-size: 1rem;
+        margin: 0 0 0.8rem 0;
+      }
+
+      .button-group {
+        display: flex;
+        gap: 0.7rem;
+        justify-content: center;
+      }
+
+      .pwa-banner button {
         background-color: white;
         color: #6a00ff;
         font-weight: bold;
@@ -1477,79 +1445,18 @@
         font-size: 0.95rem;
       }
 
-      .install-btn:hover {
-        opacity: 0.85;
-      }
-
-      .button-group {
-        display: flex;
-        gap: 0.7rem;
-        flex-wrap: wrap;
-      }
-
-      /* 💻 Desktop Layout */
-      .desktop-banner {
-        display: flex;
-        justify-content: center;
-        padding: 0;
-      }
-
-      .desktop-content {
-        display: flex;
-        flex-direction: row;
-        align-items: center; /* Vertically centers content */
-        justify-content: space-between;
-        gap: 1.2rem;
-        flex-wrap: wrap;
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 1.5rem;
-        min-height: 100px;
-        text-align: center;
-      }
-
-      .desktop-banner .close-btn {
-        display: none;
-      }
-
-      /* 📱 Mobile Layout */
-      .mobile-banner {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: relative;
-      }
-
-      .mobile-banner .close-btn {
+      .close-btn {
         position: absolute;
         top: 0.5rem;
         right: 1rem;
-        background: transparent;
+        background-color: transparent;
         color: white;
+        font-size: 1.3rem;
         border: none;
-        font-size: 1.5rem;
         cursor: pointer;
-        z-index: 10000;
-        line-height: 1;
-      }
-
-      .mobile-banner .close-btn:hover {
-        opacity: 0.6;
-      }
-
-      @media (max-width: 768px) {
-        .desktop-content {
-          flex-direction: column;
-        }
-
-        .button-group {
-          justify-content: center;
-        }
+        padding: 0;
       }
     </style>
-
-
-
 
 
 
@@ -1619,11 +1526,11 @@
   let deferredPrompt;
 
   window.addEventListener('beforeinstallprompt', (e) => {
-    // Stop auto-prompt
     e.preventDefault();
     deferredPrompt = e;
 
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
     if (isMobile) {
       document.getElementById('mobile-install-banner').style.display = 'flex';
     } else {
@@ -1632,44 +1539,50 @@
   });
 
   document.addEventListener('DOMContentLoaded', () => {
-    const installMobileBtn = document.getElementById('install-mobile-btn');
-    const installDesktopBtn = document.getElementById('install-desktop-btn');
-    const closeMobileBtn = document.getElementById('close-mobile-banner');
-    const closeDesktopBtn = document.getElementById('close-desktop-banner');
+    const mobileInstallBtn = document.getElementById('install-mobile-btn');
+    const desktopInstallBtn = document.getElementById('install-desktop-btn');
+    const mobileCloseBtn = document.getElementById('close-mobile-banner');
+    const desktopCloseBtn = document.getElementById('close-desktop-banner');
 
-    // Install buttons trigger .prompt()
-    const handleInstall = async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const choice = await deferredPrompt.userChoice;
-        if (choice.outcome === 'accepted') {
-          console.log('User accepted the A2HS prompt');
-        } else {
-          console.log('User dismissed the A2HS prompt');
+    if (mobileInstallBtn) {
+      mobileInstallBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const choice = await deferredPrompt.userChoice;
+          if (choice.outcome === 'accepted') {
+            document.getElementById('mobile-install-banner').style.display = 'none';
+          }
+          deferredPrompt = null;
         }
-        // Must null out the prompt — it can only be used once!
-        deferredPrompt = null;
+      });
+    }
 
-        // Hide all banners
-        document.getElementById('desktop-install-banner').style.display = 'none';
+    if (desktopInstallBtn) {
+      desktopInstallBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const choice = await deferredPrompt.userChoice;
+          if (choice.outcome === 'accepted') {
+            document.getElementById('desktop-install-banner').style.display = 'none';
+          }
+          deferredPrompt = null;
+        }
+      });
+    }
+
+    if (mobileCloseBtn) {
+      mobileCloseBtn.addEventListener('click', () => {
         document.getElementById('mobile-install-banner').style.display = 'none';
-      }
-    };
+      });
+    }
 
-    installMobileBtn?.addEventListener('click', handleInstall);
-    installDesktopBtn?.addEventListener('click', handleInstall);
-
-    // Close buttons
-    closeMobileBtn?.addEventListener('click', () => {
-      document.getElementById('mobile-install-banner').style.display = 'none';
-    });
-    closeDesktopBtn?.addEventListener('click', () => {
-      document.getElementById('desktop-install-banner').style.display = 'none';
-    });
+    if (desktopCloseBtn) {
+      desktopCloseBtn.addEventListener('click', () => {
+        document.getElementById('desktop-install-banner').style.display = 'none';
+      });
+    }
   });
 </script>
-
-
 
 
 
