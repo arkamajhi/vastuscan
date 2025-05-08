@@ -1432,7 +1432,7 @@
 
     <!-- 📱 Mobile Install Banner -->
     <div id="mobile-install-banner" class="pwa-banner mobile-banner" style="display: none;">
-      <button id="close-mobile-banner" class="close-btn" aria-label="Close Install Prompt">✕</button>
+      <button id="close-mobile-banner" class="close-btn" aria-label="Close Mobile Prompt">✕</button>
       <p>Access <strong>VastuScan</strong> offline using our web app.<br>It won't take up space on your phone.</p>
       <div class="button-group">
         <button id="install-mobile-btn">Install</button>
@@ -1441,7 +1441,7 @@
 
     <!-- 💻 Desktop Install Banner -->
     <div id="desktop-install-banner" class="pwa-banner desktop-banner" style="display: none;">
-      <button id="close-desktop-banner" class="close-btn" aria-label="Close Install Prompt">✕</button>
+      <button id="close-desktop-banner" class="close-btn" aria-label="Close Desktop Prompt">✕</button>
       <div class="text-block">
         <span><strong>VastuScan Offline Application</strong> — Get our free app. It won't take up space on your device.</span>
       </div>
@@ -1449,6 +1449,7 @@
         <button id="install-desktop-btn">Install</button>
       </div>
     </div>
+
 
 
 
@@ -1469,19 +1470,20 @@
         text-align: center;
       }
 
-      .pwa-banner .text-block span,
-      .pwa-banner p {
+      .pwa-banner p,
+      .pwa-banner .text-block span {
         font-size: 1rem;
-        margin: 0 0 0.8rem 0;
+        margin-bottom: 0.8rem;
       }
 
       .button-group {
         display: flex;
         gap: 0.7rem;
         justify-content: center;
+        flex-wrap: wrap;
       }
 
-      .pwa-banner button {
+      .pwa-banner .button-group button {
         background-color: white;
         color: #6a00ff;
         font-weight: bold;
@@ -1495,20 +1497,22 @@
       .close-btn {
         position: absolute;
         top: 0.5rem;
-        right: 1rem;
-        background: none;
-        color: white;
-        border: none;
-        font-size: 1.5rem;
+        right: 0.8rem;
+        background: transparent !important;
+        color: white !important;
+        border: none !important;
+        font-size: 1.5rem !important;
+        font-weight: normal;
         cursor: pointer;
-        padding: 0;
         line-height: 1;
+        z-index: 10000;
       }
 
       .close-btn:hover {
-        opacity: 0.7;
+        opacity: 0.6;
       }
     </style>
+
 
 
 
