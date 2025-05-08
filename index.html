@@ -1432,12 +1432,73 @@
 
     <!--button id="installPWA" style="display: none;">Install VastuScan</button-->
 
-    <div id="pwa-install-banner" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background-color: #6a00ff; color: white; text-align: center; padding: 1.5rem; z-index: 1000;">
-      <p style="margin: 0; font-size: 1.2rem;">Access articles offline using our web app.</p>
+    <!--div id="pwa-install-banner" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background-color: #6a00ff; color: white; text-align: center; padding: 1.5rem; z-index: 1000;">
+      <p style="margin: 0; font-size: 1.2rem;">Access articles offline using our web app. It won't take up space on your device.</p>
       <button id="pwa-install-btn" style="margin-top: 1rem; background-color: white; color: #6a00ff; font-weight: bold; padding: 0.6rem 1.4rem; border-radius: 25px; border: none; cursor: pointer;">
         Install
       </button>
+    </div-->
+
+    <!-- 📱 Mobile Install Banner -->
+    <div id="mobile-install-banner" style="display: none;" class="pwa-banner mobile-banner">
+      <p>Access articles offline using our web app.</p>
+      <button id="install-mobile-btn">Install</button>
     </div>
+
+    <!-- 💻 Desktop Install Bar -->
+    <div id="desktop-install-banner" style="display: none;" class="pwa-banner desktop-banner">
+      <span><strong>Your site</strong> — Get our free app. It won't take up space on your phone.</span>
+      <button id="install-desktop-btn">Install</button>
+      <button id="close-desktop-banner" class="close-btn">✕</button>
+    </div>
+
+    <style>
+      .pwa-banner {
+        position: fixed;
+        background-color: #6a00ff;
+        color: white;
+        font-family: sans-serif;
+        z-index: 1000;
+      }
+
+      .mobile-banner {
+        bottom: 0;
+        width: 100%;
+        padding: 1rem;
+        text-align: center;
+      }
+
+      .desktop-banner {
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 2rem;
+      }
+
+      .pwa-banner button {
+        background-color: white;
+        color: #6a00ff;
+        border: none;
+        border-radius: 20px;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        font-weight: bold;
+        margin-left: 1rem;
+      }
+
+      .close-btn {
+        background: none;
+        color: white;
+        font-size: 1.2rem;
+        padding: 0;
+        margin-left: auto;
+      }
+    </style>
+
+
 
   </footer>
 
@@ -1468,7 +1529,7 @@
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
 
-  <script>
+  <!--script>
     document.addEventListener('DOMContentLoaded', () => {
       let deferredPrompt;
       const banner = document.getElementById('pwa-install-banner');
@@ -1496,7 +1557,67 @@
         });
       }
     });
+  </script-->
+
+  <script>
+    let deferredPrompt;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+
+      // Platform check
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+      if (isMobile) {
+        document.getElementById('mobile-install-banner').style.display = 'block';
+      } else {
+        document.getElementById('desktop-install-banner').style.display = 'flex';
+      }
+    });
+
+    // Mobile install
+    document.addEventListener('DOMContentLoaded', () => {
+      const mobileBtn = document.getElementById('install-mobile-btn');
+      const desktopBtn = document.getElementById('install-desktop-btn');
+      const desktopClose = document.getElementById('close-desktop-banner');
+
+      if (mobileBtn) {
+        mobileBtn.addEventListener('click', () => {
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choice) => {
+              if (choice.outcome === 'accepted') {
+                document.getElementById('mobile-install-banner').style.display = 'none';
+              }
+              deferredPrompt = null;
+            });
+          }
+        });
+      }
+
+      if (desktopBtn) {
+        desktopBtn.addEventListener('click', () => {
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choice) => {
+              if (choice.outcome === 'accepted') {
+                document.getElementById('desktop-install-banner').style.display = 'none';
+              }
+              deferredPrompt = null;
+            });
+          }
+        });
+      }
+
+      if (desktopClose) {
+        desktopClose.addEventListener('click', () => {
+          document.getElementById('desktop-install-banner').style.display = 'none';
+        });
+      }
+    });
   </script>
+
 
 
 </body>
