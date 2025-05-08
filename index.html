@@ -1623,7 +1623,6 @@
     deferredPrompt = e;
 
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
     if (isMobile) {
       document.getElementById('mobile-install-banner').style.display = 'flex';
     } else {
@@ -1631,51 +1630,45 @@
     }
   });
 
+  // Install handlers
   document.addEventListener('DOMContentLoaded', () => {
-    const mobileInstallBtn = document.getElementById('install-mobile-btn');
-    const desktopInstallBtn = document.getElementById('install-desktop-btn');
-    const mobileCloseBtn = document.getElementById('close-mobile-banner');
-    const desktopCloseBtn = document.getElementById('close-desktop-banner');
+    const installMobileBtn = document.getElementById('install-mobile-btn');
+    const installDesktopBtn = document.getElementById('install-desktop-btn');
+    const closeMobileBtn = document.getElementById('close-mobile-banner');
+    const closeDesktopBtn = document.getElementById('close-desktop-banner');
 
-    if (mobileInstallBtn) {
-      mobileInstallBtn.addEventListener('click', async () => {
-        if (deferredPrompt) {
-          deferredPrompt.prompt();
-          const choice = await deferredPrompt.userChoice;
-          if (choice.outcome === 'accepted') {
-            document.getElementById('mobile-install-banner').style.display = 'none';
-          }
-          deferredPrompt = null;
+    installMobileBtn?.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const result = await deferredPrompt.userChoice;
+        if (result.outcome === 'accepted') {
+          document.getElementById('mobile-install-banner').style.display = 'none';
         }
-      });
-    }
+        deferredPrompt = null;
+      }
+    });
 
-    if (desktopInstallBtn) {
-      desktopInstallBtn.addEventListener('click', async () => {
-        if (deferredPrompt) {
-          deferredPrompt.prompt();
-          const choice = await deferredPrompt.userChoice;
-          if (choice.outcome === 'accepted') {
-            document.getElementById('desktop-install-banner').style.display = 'none';
-          }
-          deferredPrompt = null;
+    installDesktopBtn?.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const result = await deferredPrompt.userChoice;
+        if (result.outcome === 'accepted') {
+          document.getElementById('desktop-install-banner').style.display = 'none';
         }
-      });
-    }
+        deferredPrompt = null;
+      }
+    });
 
-    if (mobileCloseBtn) {
-      mobileCloseBtn.addEventListener('click', () => {
-        document.getElementById('mobile-install-banner').style.display = 'none';
-      });
-    }
+    closeMobileBtn?.addEventListener('click', () => {
+      document.getElementById('mobile-install-banner').style.display = 'none';
+    });
 
-    if (desktopCloseBtn) {
-      desktopCloseBtn.addEventListener('click', () => {
-        document.getElementById('desktop-install-banner').style.display = 'none';
-      });
-    }
+    closeDesktopBtn?.addEventListener('click', () => {
+      document.getElementById('desktop-install-banner').style.display = 'none';
+    });
   });
 </script>
+
 
 
 
