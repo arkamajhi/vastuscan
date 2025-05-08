@@ -1441,7 +1441,7 @@
 
     <!-- 📱 Mobile Install Banner -->
     <div id="mobile-install-banner" style="display: none;" class="pwa-banner mobile-banner">
-      <p>Access VastuScan offline using our web app. It won't take up space on your phone.</p>
+      <p>Access VastuScan offline using our web app.<br>It won't take up space on your phone.</p>
       <button id="install-mobile-btn">Install</button>
     </div>
 
@@ -1452,41 +1452,66 @@
       <button id="close-desktop-banner" class="close-btn">✕</button>
     </div>
 
+    <!-- 📱 Mobile Install Banner -->
+    <div id="mobile-install-banner" class="pwa-banner mobile-banner" style="display: none;">
+      <p>Access VastuScan offline using our web app.<br>It won't take up space on your phone.</p>
+      <div class="button-group">
+        <button id="install-mobile-btn">Install</button>
+        <button id="close-mobile-banner" class="close-btn">✕</button>
+      </div>
+    </div>
+
+    <!-- 💻 Desktop Install Banner -->
+    <div id="desktop-install-banner" class="pwa-banner desktop-banner" style="display: none;">
+      <span><strong>VastuScan Offline Application</strong> — Get our free app. It won't take up space on your device.</span>
+      <div class="button-group">
+        <button id="install-desktop-btn">Install</button>
+        <button id="close-desktop-banner" class="close-btn">✕</button>
+      </div>
+    </div>
+
+
     <style>
       .pwa-banner {
         position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
         background-color: #6a00ff;
         color: white;
         font-family: sans-serif;
         z-index: 1000;
-      }
-
-      .mobile-banner {
-        bottom: 0;
-        width: 100%;
         padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
         text-align: center;
       }
 
-      .desktop-banner {
-        top: 0;
-        left: 0;
-        right: 0;
+      .pwa-banner p,
+      .pwa-banner span {
+        flex: 1 1 auto;
+        margin: 0;
+        padding-right: 1rem;
+        text-align: left;
+      }
+
+      .button-group {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        padding: 1rem 2rem;
+        gap: 0.5rem;
       }
 
       .pwa-banner button {
         background-color: white;
         color: #6a00ff;
+        font-weight: bold;
         border: none;
         border-radius: 20px;
-        padding: 0.5rem 1rem;
+        padding: 0.4rem 1rem;
         cursor: pointer;
-        font-weight: bold;
-        margin-left: 1rem;
+        font-size: 0.9rem;
       }
 
       .close-btn {
@@ -1494,9 +1519,9 @@
         color: white;
         font-size: 1.2rem;
         padding: 0;
-        margin-left: auto;
       }
     </style>
+
 
 
 
@@ -1566,57 +1591,61 @@
       e.preventDefault();
       deferredPrompt = e;
 
-      // Platform check
       const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
       if (isMobile) {
-        document.getElementById('mobile-install-banner').style.display = 'block';
+        document.getElementById('mobile-install-banner').style.display = 'flex';
       } else {
         document.getElementById('desktop-install-banner').style.display = 'flex';
       }
     });
 
-    // Mobile install
     document.addEventListener('DOMContentLoaded', () => {
-      const mobileBtn = document.getElementById('install-mobile-btn');
-      const desktopBtn = document.getElementById('install-desktop-btn');
-      const desktopClose = document.getElementById('close-desktop-banner');
+      const mobileInstallBtn = document.getElementById('install-mobile-btn');
+      const desktopInstallBtn = document.getElementById('install-desktop-btn');
+      const mobileCloseBtn = document.getElementById('close-mobile-banner');
+      const desktopCloseBtn = document.getElementById('close-desktop-banner');
 
-      if (mobileBtn) {
-        mobileBtn.addEventListener('click', () => {
+      if (mobileInstallBtn) {
+        mobileInstallBtn.addEventListener('click', async () => {
           if (deferredPrompt) {
             deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((choice) => {
-              if (choice.outcome === 'accepted') {
-                document.getElementById('mobile-install-banner').style.display = 'none';
-              }
-              deferredPrompt = null;
-            });
+            const choice = await deferredPrompt.userChoice;
+            if (choice.outcome === 'accepted') {
+              document.getElementById('mobile-install-banner').style.display = 'none';
+            }
+            deferredPrompt = null;
           }
         });
       }
 
-      if (desktopBtn) {
-        desktopBtn.addEventListener('click', () => {
+      if (desktopInstallBtn) {
+        desktopInstallBtn.addEventListener('click', async () => {
           if (deferredPrompt) {
             deferredPrompt.prompt();
-            deferredPrompt.userChoice.then((choice) => {
-              if (choice.outcome === 'accepted') {
-                document.getElementById('desktop-install-banner').style.display = 'none';
-              }
-              deferredPrompt = null;
-            });
+            const choice = await deferredPrompt.userChoice;
+            if (choice.outcome === 'accepted') {
+              document.getElementById('desktop-install-banner').style.display = 'none';
+            }
+            deferredPrompt = null;
           }
         });
       }
 
-      if (desktopClose) {
-        desktopClose.addEventListener('click', () => {
+      if (mobileCloseBtn) {
+        mobileCloseBtn.addEventListener('click', () => {
+          document.getElementById('mobile-install-banner').style.display = 'none';
+        });
+      }
+
+      if (desktopCloseBtn) {
+        desktopCloseBtn.addEventListener('click', () => {
           document.getElementById('desktop-install-banner').style.display = 'none';
         });
       }
     });
   </script>
+
 
 
 
