@@ -117,7 +117,7 @@
 
 </script-->
 
-  <script>
+  <!--script>
     let deferredPrompt;
     const banner = document.getElementById('pwa-install-banner');
     const installBtn = document.getElementById('pwa-install-btn');
@@ -141,21 +141,14 @@
         deferredPrompt = null;
       }
     });
-  </script>
+  </script-->
 
 </head>
 
 
 <body class="index-page">
 
-  <!--button id="installPWA" style="display: none;">Install VastuScan</button-->
 
-  <div id="pwa-install-banner" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background-color: #6a00ff; color: white; text-align: center; padding: 1.5rem; z-index: 1000;">
-    <p style="margin: 0; font-size: 1.2rem;">Access articles offline using our web app.</p>
-    <button id="pwa-install-btn" style="margin-top: 1rem; background-color: white; color: #6a00ff; font-weight: bold; padding: 0.6rem 1.4rem; border-radius: 25px; border: none; cursor: pointer;">
-      Install
-    </button>
-  </div>
 
   <header id="header" class="header sticky-top">
 
@@ -1437,6 +1430,15 @@
       </div-->
     </div>
 
+    <!--button id="installPWA" style="display: none;">Install VastuScan</button-->
+
+    <div id="pwa-install-banner" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background-color: #6a00ff; color: white; text-align: center; padding: 1.5rem; z-index: 1000;">
+      <p style="margin: 0; font-size: 1.2rem;">Access articles offline using our web app.</p>
+      <button id="pwa-install-btn" style="margin-top: 1rem; background-color: white; color: #6a00ff; font-weight: bold; padding: 0.6rem 1.4rem; border-radius: 25px; border: none; cursor: pointer;">
+        Install
+      </button>
+    </div>
+
   </footer>
 
   <!-- Scroll Top -->
@@ -1449,6 +1451,8 @@
     <div></div>
     <div></div>
   </div>
+
+
 
   <!-- Vendor JS Files -->
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -1463,6 +1467,37 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let deferredPrompt;
+      const banner = document.getElementById('pwa-install-banner');
+      const installBtn = document.getElementById('pwa-install-btn');
+
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        if (banner) banner.style.display = 'block';
+      });
+
+      if (installBtn) {
+        installBtn.addEventListener('click', async () => {
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const choice = await deferredPrompt.userChoice;
+            if (choice.outcome === 'accepted') {
+              console.log('PWA installed');
+              banner.style.display = 'none';
+            } else {
+              console.log('PWA install dismissed');
+            }
+            deferredPrompt = null;
+          }
+        });
+      }
+    });
+  </script>
+
 
 </body>
 
