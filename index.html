@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-IN">
 
 <head>
   <!-- Google tag (gtag.js) -->
@@ -32,6 +32,9 @@
   </script>
 
   <link rel="canonical" href="https://vastuscan.com/">
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#106eea">
 
 
   <!-- Basic Meta Tags -->
@@ -93,10 +96,33 @@
 
   <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
 
+  <script type="text/javascript">
+  let deferredPrompt;
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installPWA').style.display = 'block';
+
+  document.getElementById('installPWA').addEventListener('click', () => {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choice) => {
+      if (choice.outcome === 'accepted') {
+        console.log('User installed the PWA');
+      }
+      deferredPrompt = null;
+    });
+  });
+  });
+
+  </script>
+
 </head>
 
 
 <body class="index-page">
+
+  <button id="installPWA" style="display: none;">Install VastuScan</button>
 
   <header id="header" class="header sticky-top">
 
