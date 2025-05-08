@@ -1432,7 +1432,7 @@
 
     <!-- 📱 Mobile Install Banner -->
     <div id="mobile-install-banner" class="pwa-banner mobile-banner" style="display: none;">
-      <button id="close-mobile-banner" class="close-btn">✕</button>
+      <button id="close-mobile-banner" class="close-btn" aria-label="Close Install Prompt">✕</button>
       <p>Access <strong>VastuScan</strong> offline using our web app.<br>It won't take up space on your phone.</p>
       <div class="button-group">
         <button id="install-mobile-btn">Install</button>
@@ -1441,7 +1441,7 @@
 
     <!-- 💻 Desktop Install Banner -->
     <div id="desktop-install-banner" class="pwa-banner desktop-banner" style="display: none;">
-      <button id="close-desktop-banner" class="close-btn">✕</button>
+      <button id="close-desktop-banner" class="close-btn" aria-label="Close Install Prompt">✕</button>
       <div class="text-block">
         <span><strong>VastuScan Offline Application</strong> — Get our free app. It won't take up space on your device.</span>
       </div>
@@ -1496,14 +1496,20 @@
         position: absolute;
         top: 0.5rem;
         right: 1rem;
-        background-color: transparent;
+        background: none;
         color: white;
-        font-size: 1.3rem;
         border: none;
+        font-size: 1.5rem;
         cursor: pointer;
         padding: 0;
+        line-height: 1;
+      }
+
+      .close-btn:hover {
+        opacity: 0.7;
       }
     </style>
+
 
 
 
