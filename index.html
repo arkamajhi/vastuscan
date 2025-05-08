@@ -1441,16 +1441,14 @@
 
     <!-- 💻 Desktop Install Banner -->
     <div id="desktop-install-banner" class="pwa-banner desktop-banner" style="display: none;">
-      <button id="close-desktop-banner" class="close-btn" aria-label="Close Desktop Prompt">✕</button>
-      <div class="text-block">
+      <div class="desktop-content">
         <span><strong>VastuScan Offline Application</strong> — Get our free app. It won't take up space on your device.</span>
-      </div>
-      <div class="button-group">
-        <button id="install-desktop-btn">Install</button>
+        <div class="button-group">
+          <button id="install-desktop-btn" class="install-btn">Install</button>
+          <button id="close-desktop-banner" class="install-btn">Close</button>
+        </div>
       </div>
     </div>
-
-
 
 
     <style>
@@ -1464,25 +1462,16 @@
         font-family: sans-serif;
         z-index: 9999;
         padding: 2rem 1.5rem 1rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
         text-align: center;
       }
 
       .pwa-banner p,
-      .pwa-banner .text-block span {
+      .pwa-banner .desktop-content span {
         font-size: 1rem;
         margin-bottom: 0.8rem;
       }
 
-      .button-group {
-        display: flex;
-        gap: 0.7rem;
-        justify-content: center;
-        flex-wrap: wrap;
-      }
-
+      .install-btn,
       .pwa-banner .button-group button {
         background-color: white;
         color: #6a00ff;
@@ -1494,25 +1483,64 @@
         font-size: 0.95rem;
       }
 
-      .close-btn {
+      .install-btn:hover {
+        opacity: 0.85;
+      }
+
+      .button-group {
+        display: flex;
+        gap: 0.7rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      /* 💻 Desktop Layout */
+      .desktop-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+        max-width: 1100px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .desktop-banner .close-btn {
+        display: none; /* ❌ Remove corner close for desktop */
+      }
+
+      /* 📱 Mobile Layout */
+      .mobile-banner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+      }
+
+      .mobile-banner .close-btn {
         position: absolute;
         top: 0.5rem;
-        right: 0.8rem;
-        background: transparent !important;
-        color: white !important;
-        border: none !important;
-        font-size: 1.5rem !important;
-        font-weight: normal;
+        right: 1rem;
+        background: transparent;
+        color: white;
+        border: none;
+        font-size: 1.5rem;
         cursor: pointer;
-        line-height: 1;
         z-index: 10000;
+        line-height: 1;
       }
 
-      .close-btn:hover {
+      .mobile-banner .close-btn:hover {
         opacity: 0.6;
       }
-    </style>
 
+      @media (max-width: 768px) {
+        .desktop-content {
+          flex-direction: column;
+        }
+      }
+    </style>
 
 
 
