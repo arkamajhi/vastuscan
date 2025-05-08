@@ -1461,14 +1461,8 @@
         color: white;
         font-family: sans-serif;
         z-index: 9999;
-        padding: 2rem 1.5rem 1rem;
+        padding: 1.5rem;
         text-align: center;
-      }
-
-      .pwa-banner p,
-      .pwa-banner .desktop-content span {
-        font-size: 1rem;
-        margin-bottom: 0.8rem;
       }
 
       .install-btn,
@@ -1490,24 +1484,32 @@
       .button-group {
         display: flex;
         gap: 0.7rem;
-        justify-content: center;
         flex-wrap: wrap;
       }
 
       /* 💻 Desktop Layout */
+      .desktop-banner {
+        display: flex;
+        justify-content: center;
+        padding: 0;
+      }
+
       .desktop-content {
         display: flex;
-        align-items: center;
+        flex-direction: row;
+        align-items: center; /* Vertically centers content */
         justify-content: space-between;
-        gap: 1rem;
+        gap: 1.2rem;
         flex-wrap: wrap;
         max-width: 1100px;
         margin: 0 auto;
+        padding: 1.5rem;
+        min-height: 100px;
         text-align: center;
       }
 
       .desktop-banner .close-btn {
-        display: none; /* ❌ Remove corner close for desktop */
+        display: none;
       }
 
       /* 📱 Mobile Layout */
@@ -1539,8 +1541,13 @@
         .desktop-content {
           flex-direction: column;
         }
+
+        .button-group {
+          justify-content: center;
+        }
       }
     </style>
+
 
 
 
