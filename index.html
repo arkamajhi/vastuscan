@@ -1430,35 +1430,26 @@
       </div-->
     </div>
 
-    <!--button id="installPWA" style="display: none;">Install VastuScan</button-->
-
-    <!--div id="pwa-install-banner" style="display: none; position: fixed; bottom: 0; left: 0; right: 0; background-color: #6a00ff; color: white; text-align: center; padding: 1.5rem; z-index: 1000;">
-      <p style="margin: 0; font-size: 1.2rem;">Access articles offline using our web app. It won't take up space on your device.</p>
-      <button id="pwa-install-btn" style="margin-top: 1rem; background-color: white; color: #6a00ff; font-weight: bold; padding: 0.6rem 1.4rem; border-radius: 25px; border: none; cursor: pointer;">
-        Install
-      </button>
-    </div-->
-
-
     <!-- 📱 Mobile Install Banner -->
     <div id="mobile-install-banner" class="pwa-banner mobile-banner" style="display: none;">
-      <p>Access VastuScan offline using our web app.<br>It won't take up space on your phone.</p>
+      <button id="close-mobile-banner" class="close-btn">✕</button>
+      <p>Access <strong>VastuScan</strong> offline using our web app.<br>It won't take up space on your phone.</p>
       <div class="button-group">
         <button id="install-mobile-btn">Install</button>
-        <button id="close-mobile-banner" class="close-btn">✕</button>
       </div>
     </div>
 
     <!-- 💻 Desktop Install Banner -->
     <div id="desktop-install-banner" class="pwa-banner desktop-banner" style="display: none;">
+      <button id="close-desktop-banner" class="close-btn">✕</button>
       <div class="text-block">
         <span><strong>VastuScan Offline Application</strong> — Get our free app. It won't take up space on your device.</span>
       </div>
       <div class="button-group">
         <button id="install-desktop-btn">Install</button>
-        <button id="close-desktop-banner" class="close-btn desktop-close-left">✕</button>
       </div>
     </div>
+
 
 
     <style>
@@ -1471,20 +1462,20 @@
         color: white;
         font-family: sans-serif;
         z-index: 9999;
-        padding: 1rem;
+        padding: 2rem 1.5rem 1rem;
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
       }
 
-      .pwa-banner .text-block p {
-        margin: 0;
+      .pwa-banner .text-block span,
+      .pwa-banner p {
         font-size: 1rem;
+        margin: 0 0 0.8rem 0;
       }
 
       .button-group {
-        margin-top: 0.7rem;
         display: flex;
         gap: 0.7rem;
         justify-content: center;
@@ -1502,23 +1493,18 @@
       }
 
       .close-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 1rem;
         background-color: transparent;
         color: white;
-        font-size: 1.2rem;
-        padding: 0.4rem 0.8rem;
-        border: 1px solid white;
-        border-radius: 50%;
-        line-height: 1;
-      }
-
-      .desktop-close-left {
-        order: -1;
-        margin-right: auto;
-        margin-left: 0;
-        position: relative;
-        left: -1rem;
+        font-size: 1.3rem;
+        border: none;
+        cursor: pointer;
+        padding: 0;
       }
     </style>
+
 
 
 
