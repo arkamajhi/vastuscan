@@ -99,6 +99,25 @@
 </head>
 
 
+<script>
+function showSuccess(){
+
+setTimeout(function(){
+
+alert(
+"Thank you! Your message has been sent."
+);
+
+document
+.getElementById("contactForm")
+.reset();
+
+},1000);
+
+}
+</script>
+
+
 <body class="index-page">
 
 
@@ -1384,9 +1403,17 @@
           </div>
 
           <div class="col-lg-7">
+
+            <iframe
+            name="hidden_iframe"
+            style="display:none;">
+            </iframe>
+
             <form
-              action="https://script.google.com/macros/s/AKfycbwxOkvHTBSMLIVFP0zUC0e93HqoUsylJ7kcYLHAjnUk5b9ritOphMqi_XO0ZFb3dOMpIw/exec"
+              action="https://script.google.com/macros/s/AKfycbyt-qXsUP9l3bX59L0LBXurFHnwzmpTrfVr5093V4VU1579KcVx67C-trHSPSoOzY--sw/exec"
               method="POST"
+              target="hidden_iframe"
+              onsubmit="showSuccess()"
               class="php-email-form"
               data-aos="fade-up"
               data-aos-delay="200">
